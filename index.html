@@ -83,6 +83,7 @@
         #noBtn {
             background-color: #6c757d;
             color: white;
+            transition: none; /* Instant move for playfulness */
         }
 
         .success-message {
@@ -166,7 +167,7 @@
         <div id="generatorArea" style="display: none;">
             <h1>Create Magic Link</h1>
             <p>Make a custom Valentine page for your special someone!</p>
-            <input type="text" id="toInput" placeholder="Recipient's Name">
+            <input type="text" id="toInput" placeholder="Valentine Name">
             <input type="text" id="fromInput" placeholder="Your Name">
             <button class="btn" id="generateBtn" style="background-color: #ff4d6d; color: white; width: 100%;">Generate Link</button>
             <div id="linkOutput" style="margin-top: 20px; word-break: break-all;"></div>
@@ -205,22 +206,19 @@
         }
 
         let yesScale = 1;
+        let noClickCount = 0;
+        const noPhrases = [
+            "No",
+            "Are you sure?",
+            "Really sure??",
+            "Think again! 🥺",
+            "Last chance! 💔"
+        ];
+
         noBtn.addEventListener('mouseover', moveButton);
         noBtn.addEventListener('click', moveButton);
 
-        function moveButton() {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-
-            yesScale += 0.2;
-            yesBtn.style.transform = `scale(${yesScale})`;
-        }
-
-        yesBtn.addEventListener('click', () => {
+        function handleYes() {
             questionArea.style.display = 'none';
             successArea.style.display = 'block';
             
@@ -233,7 +231,40 @@
 
             const shareMsg = encodeURIComponent(`I said YES to being ${fromName || 'your'} Valentine! ❤️`);
             whatsappShare.href = `https://api.whatsapp.com/send?text=${shareMsg}`;
-        });
+        }
+
+        function moveButton() {
+            if (noClickCount >= 4) {
+                // After 4 times, the No button essentially becomes a Yes button
+                handleYes();
+                return;
+            }
+
+            noClickCount++;
+            
+            // Change text
+            noBtn.innerText = noPhrases[noClickCount] || "Yes";
+
+            // Move button
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            // Make Yes button bigger
+            yesScale += 0.3;
+            yesBtn.style.transform = `scale(${yesScale})`;
+
+            // If it's the last stage, change appearance to look like Yes?
+            if (noClickCount === 4) {
+                noBtn.style.backgroundColor = "#ff4d6d";
+                noBtn.innerText = "Yes";
+            }
+        }
+
+        yesBtn.addEventListener('click', handleYes);
 
         document.getElementById('generateBtn').addEventListener('click', () => {
             const to = document.getElementById('toInput').value;
@@ -242,7 +273,7 @@
             const finalUrl = `${baseUrl}?to=${encodeURIComponent(to)}&from=${encodeURIComponent(from)}`;
             
             document.getElementById('linkOutput').innerHTML = `
-                <p style="font-size: 0.9rem; margin-top: 10px;">Send this link to your crush:</p>
+                <p style="font-size: 0.9rem; margin-top: 10px;">Send this link to your Valentine:</p>
                 <div style="background: #fff; padding: 15px; border-radius: 12px; border: 2px dashed #ff4d6d; margin-bottom: 15px; font-size: 0.85rem; color: #d63384;">${finalUrl}</div>
                 <button class="btn" id="copyBtn" style="background-color: #6c757d; color: white; width: 100%; font-size: 1rem; margin-bottom: 10px; padding: 12px;">Copy Link</button>
                 <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('Hey, I have a special surprise for you: ' + finalUrl)}" class="share-btn" style="width: 100%; justify-content: center;">Send via WhatsApp</a>
