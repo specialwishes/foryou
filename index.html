@@ -107,7 +107,7 @@
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
             position: absolute;
-            z-index: 10; /* Overlapping by default */
+            z-index: 10;
         }
 
         .personalization-box {
@@ -195,8 +195,7 @@
         <p class="question">Will You Be My Valentine?</p>
         
         <div class="gif-container">
-            <!-- Cute asking GIF -->
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueW96M3R0ZzR3eHlwbm53bmx6bmx6bmx6bmx6bmx6bmx6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KzM1lAfJpx3FQp3SP2/giphy.gif" alt="Cute Kitten">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHZsdzh2Y3F4Z3R4bnl4bnl4bnl4bnl4bnl4bnl4bnl4bnl4bnl4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KzM1lAfJpx3FQp3SP2/giphy.gif" alt="Cute Kitten">
         </div>
 
         <div class="buttons">
@@ -218,8 +217,7 @@
         <p class="question">I'm so happy! You've made my day! 🥰</p>
         
         <div class="gif-container">
-            <!-- Happy celebration GIF -->
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueW96M3R0ZzR3eHlwbm53bmx6bmx6bmx6bmx6bmx6bmx6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/L4lvBzeIlMn70Y0SIn/giphy.gif" alt="Happy Patrick">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnl4bnl4bnl4bnl4bnl4bnl4bnl4bnl4bnl4bnl4bnl4bnl4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/L4lvBzeIlMn70Y0SIn/giphy.gif" alt="Happy Dance">
         </div>
 
         <div class="share-buttons">
@@ -244,13 +242,11 @@
             const container = document.querySelector('.buttons');
             const containerRect = container.getBoundingClientRect();
             
-            // Increase YES button size each time NO is attempted
             const yesBtn = document.getElementById('yesBtn');
             noBtnClickCount++;
             const newSize = 1 + (noBtnClickCount * 0.1);
             yesBtn.style.transform = `scale(${newSize})`;
 
-            // Move NO button to random position within the buttons area
             const maxX = containerRect.width - 100;
             const maxY = containerRect.height - 50;
             const randomX = Math.random() * maxX - maxX/2;
@@ -258,7 +254,6 @@
             
             noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
             
-            // Change button text based on attempts
             const messages = [
                 "No", "Are you sure?", "Really?", "Think again!", 
                 "Don't be shy!", "Just say yes!", "Pretty please?", 
@@ -274,8 +269,6 @@
         }
 
         function moveNoBtnPlayfully() {
-            // This triggers when YES is hovered
-            // Makes the NO button jump to interfere/overlap or just move around
             moveNoBtn();
         }
 
@@ -325,7 +318,7 @@
             
             navigator.clipboard.writeText(personalizedUrl).then(() => {
                 alert("Personalized link copied! Share it with " + input + "! 💕");
-                window.location.href = personalizedUrl; // Refresh to see changes
+                window.location.href = personalizedUrl;
             });
         }
 
